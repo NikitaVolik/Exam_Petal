@@ -25,7 +25,11 @@ export default function AdminPage() {
     }
   }, [])
 
-  const filtered = items.filter(item => !status || item.status === status).sort((a, b) => sort === 'asc' ? a.id - b.id : b.id - a.id)
+  const filtered = items.filter(item => !status || item.status === status).sort((a, b) => {
+    const byValue = a.created_at.localeCompare(b.created_at)
+    const order = byValue || a.id - b.id
+    return sort === 'asc' ? order : -order
+  })
   const totalPages = Math.max(1, Math.ceil(filtered.length / 4))
   const currentPage = Math.min(page, totalPages)
   const visible = filtered.slice((currentPage - 1) * 4, currentPage * 4)

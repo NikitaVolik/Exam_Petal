@@ -10,6 +10,7 @@ export default function NewItemPage() {
   })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
+  const [errors, setErrors] = useState({})
   const [message, setMessage] = useState('')
 
   function change(event) {
@@ -25,6 +26,7 @@ export default function NewItemPage() {
 
     setSaving(true)
     setError('')
+    setErrors({})
     setMessage('')
     
     try {
@@ -42,6 +44,7 @@ export default function NewItemPage() {
       setMessage(`${data.message}. Номер: ${data.id}`)
     } catch (err) {
       setError(err.message)
+      setErrors(err.fields || {})
     } finally {
       setSaving(false)
     }
@@ -50,7 +53,7 @@ export default function NewItemPage() {
   return (
     <>
       <h1>Новый заказ</h1>
-      <form className="card stack" onSubmit={submit}>
+      <form className="card stack" onSubmit={submit} noValidate>
         <label className="field">
           <span>Букет</span>
           <select
@@ -66,6 +69,9 @@ export default function NewItemPage() {
             <option value="Красные розы">Красные розы</option>
             <option value="Белые ромашки">Белые ромашки</option>
           </select>
+          {errors.title && (
+            <small className="field-error">{errors.title}</small>
+          )}
         </label>
         <label className="field">
           <span>Количество</span>
@@ -79,6 +85,9 @@ export default function NewItemPage() {
             max="10"
             disabled={saving}
           />
+          {errors.quantity && (
+            <small className="field-error">{errors.quantity}</small>
+          )}
         </label>
         <label className="field">
           <span>Дата самовывоза</span>
@@ -92,6 +101,9 @@ export default function NewItemPage() {
             maxLength={10}
             disabled={saving}
           />
+          {errors.pickup_date && (
+            <small className="field-error">{errors.pickup_date}</small>
+          )}
         </label>
         <label className="field">
           <span>Способ оплаты</span>
@@ -106,6 +118,9 @@ export default function NewItemPage() {
             <option value="Наличными">Наличными</option>
             <option value="Картой при получении">Картой при получении</option>
           </select>
+          {errors.payment_method && (
+            <small className="field-error">{errors.payment_method}</small>
+          )}
         </label>
         {error && <p className="form-error" role="alert">{error}</p>}
         {message && <p className="form-message" role="status">{message} <a href="/">Мои заказы</a></p>}
