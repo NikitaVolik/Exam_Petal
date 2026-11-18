@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { api } from "./api.js";
 import { statusLabel } from "./statuses.js";
 import Slider from "./Slider.jsx";
+import BouquetCard from "./BouquetCard.jsx";
 
 const slides = [
-  { src: '/images/slide-1.webp', alt: 'Изображение 1' },
-  { src: '/images/slide-2.webp', alt: 'Изображение 2' },
-  { src: '/images/slide-3.webp', alt: 'Изображение 3' },
-  { src: '/images/slide-4.webp', alt: 'Изображение 4' },
+  { src: '/images/slide-daisies.webp', alt: 'Изображение 1' },
+  { src: '/images/slide-peonies.webp', alt: 'Изображение 2' },
+  { src: '/images/slide-roses.webp', alt: 'Изображение 3' },
+  { src: '/images/slide-tulips.webp', alt: 'Изображение 4' },
 ]
 
 
@@ -45,13 +46,13 @@ export default function Dashboard({ user }) {
       )}
       <div className="grid cols-2">
         {items.map(item => (
-          <article key={item.id} className="card stack">
+          <BouquetCard key={item.id} item={item}>
             <h3>{item.title}</h3>
             <p>{item.quantity}</p>
             <p>{item.pickup_date}</p>
             <p>{item.payment_method}</p>
-            <p>Статус: {statusLabel(item.status)}</p>
-          </article>
+            <p>Статус: <span className="status-badge">{statusLabel(item.status)}</span></p>
+          </BouquetCard>
         ))}
       </div>
     </>

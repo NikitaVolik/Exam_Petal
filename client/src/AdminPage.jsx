@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { api } from "./api.js";
 import { statuses } from "./statuses.js";
+import BouquetCard from "./BouquetCard.jsx";
 
 export default function AdminPage() {
   const [items, setItems] = useState([])
@@ -105,7 +106,7 @@ export default function AdminPage() {
 
       <div className="grid cols-2">
         {visible.map(item => (
-          <article className="card stack" key={item.id}>
+          <BouquetCard key={item.id} item={item}>
             <h2>Заказ № {item.id}</h2>
             <h3>{item.title}</h3>
             <p>{item.quantity}</p>
@@ -115,6 +116,7 @@ export default function AdminPage() {
             <label className="field">
               <span>Статус (сохраняется сразу)</span>
               <select
+                className="status-badge"
                 value={item.status}
                 disabled={savingId !== null}
                 onChange={event => saveStatus(item.id, event.target.value)}
@@ -126,7 +128,7 @@ export default function AdminPage() {
                 ))}
               </select>
             </label>
-          </article>
+          </BouquetCard>
         ))}
       </div>
 
